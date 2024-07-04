@@ -1,1 +1,1 @@
-# eucws-macco
+# eucws
