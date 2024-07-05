@@ -371,7 +371,7 @@ function loadTable(){
 	for(var i=0; i<purCount; i++){
 		if(purs[i]['isPayed'] == 0){
 			//----unpay set color----//
-			$table.find("tr:nth-child("+(i+1)+")").css("background-color","red").css("color","white");
+			$table.find("tr:nth-child("+(i+1)+")").css("color","red");
 		}
 	}
 	displaySum();
