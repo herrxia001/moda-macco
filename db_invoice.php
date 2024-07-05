@@ -631,18 +631,21 @@ function dbQueryArtRefund($timefrom, $timeto, $option)
 
 /* PURCHASES */
 // Query all purchases
-function dbQueryPurInvoices($timefrom, $timeto, $sId)
+function dbQueryPurInvoices($timefrom, $timeto, $sId, $sPay)
 {
 	$thisDb = new myDatabase($_SESSION['uDb']);
+	$where = "";
+	if($sPay == 1) $where = " AND isPayed = 1";
+	else if($sPay == 0) $where = " AND isPayed = 0";
 	if ($timefrom != NULL && $timeto != NULL)
 	{
 		if ($sId != NULL && $sId != "")
-			$sqlQuery = "SELECT * FROM a_purs WHERE date>='".$timefrom." 00:00:00' AND date<='".$timeto." 23:59:59' AND s_id='".$sId."' ORDER BY date DESC";	
+			$sqlQuery = "SELECT * FROM a_purs WHERE date>='".$timefrom." 00:00:00' AND date<='".$timeto." 23:59:59' AND s_id='".$sId."'".$where." ORDER BY date DESC";	
 		else
-			$sqlQuery = "SELECT * FROM a_purs WHERE date>='".$timefrom." 00:00:00' AND date<='".$timeto." 23:59:59' ORDER BY date DESC";
+			$sqlQuery = "SELECT * FROM a_purs WHERE date>='".$timefrom." 00:00:00' AND date<='".$timeto." 23:59:59' ".$where." ORDER BY date DESC";
 	}
 	else
-		$sqlQuery = "SELECT * FROM a_purs";
+		$sqlQuery = "SELECT * FROM a_purs WHERE 1=1".$where;
 	$thisQuery = $thisDb->dbQuery($sqlQuery);
 	$thisDb->dbClose();
 	
@@ -654,10 +657,10 @@ function dbCreatePurInvoice($pur, $puritems)
 {
 	$thisDb = new myDatabase($_SESSION['uDb']);
 	$sqlInsert = 
-			"INSERT INTO a_purs(p_id, s_id, u_id, date, count_sum, cost_sum, total_sum, discount, fee, tax, payment)
+			"INSERT INTO a_purs(p_id, s_id, u_id, date, count_sum, cost_sum, total_sum, discount, fee, tax, payment, isPayed)
 			VALUES('".$pur['p_id']."','".$pur['s_id']."','".$_SESSION['uId']."','".$pur['date'].
 			"','".$pur['count_sum']."','".$pur['cost_sum']."','".$pur['total_sum'].
-			"','".$pur['discount']."','".$pur['fee']."','".$pur['tax']."','".$pur['payment']."')";				
+			"','".$pur['discount']."','".$pur['fee']."','".$pur['tax']."','".$pur['payment']."','".$pur['isPayed']."')";				
 	$fId = $thisDb->dbInsertId($sqlInsert);
 	if ($fId <= 0)
 	{

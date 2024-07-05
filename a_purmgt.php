@@ -47,7 +47,7 @@ $myArts = dbQueryArticles();
 	<div class="container">	
 <!-- buttons -->
 		<div class="row">
-			<div class="input-group p-1 col-12 col-sm-12 col-md-12 col-lg-6">
+			<div class="input-group p-1 col-12 col-sm-12 col-md-12 col-lg-8">
 				<button type="button" class="btn btn-outline-secondary" id="selTime" onclick="selectTime()" style="width:220px">
 					<?php echo $thisResource->mdstRdThisMonth ?></button>
 				<button type="button" class="ml-1 btn btn-outline-secondary dropdown-toggle" id="s_name" data-toggle="dropdown" style="width:220px">
@@ -60,8 +60,17 @@ $myArts = dbQueryArticles();
 						echo "<a class='dropdown-item' href='#' onclick='filterSup(this)'>".$mySuppliers[$i]['s_name']."</a>";
 					?>
 				</div>
+				<div class="dropdown">
+					<button type="button" class="ml-1 btn btn-outline-secondary dropdown-toggle" id="s_isPayed" data-toggle="dropdown" style="width:220px">
+						全部</button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="#" onclick="filterPay(this, -1)">全部</a>
+						<a class="dropdown-item" href="#" onclick="filterPay(this, 0)">未付</a>
+						<a class="dropdown-item" href="#" onclick="filterPay(this, 1)">已付</a>
+					</div>
+				</div>
 			</div>
-			<div class="p-1 col-12 col-sm-12 col-md-12 col-lg-6" align="right">						
+			<div class="p-1 col-12 col-sm-12 col-md-12 col-lg-4" align="right">						
 				<button type="button" class="btn btn-secondary" id="btnExport" onclick="exportFile()"><span class='fa fa-floppy-o'></button>
 				<button type="button" class="btn btn-secondary" id="btnPrint" onclick="printFile()"><span class='fa fa-print'></button>
 				<button type="button" class="btn btn-primary" onclick="newPur()"><span class='fa fa-plus'></button>
@@ -202,6 +211,18 @@ $myArts = dbQueryArticles();
 				</div>
 				<button type="button" class="ml-1 btn btn-primary" style="font-size:14px;" id="mdpBtnCal" onclick="mdpCalSum()">总计</button>
 				<input type="number" style="font-size:14px;" class="form-control" name="mdp_total" id="mdp_total" readonly>
+				<div class="form-check ml-3 pt-2">
+					<input class="form-check-input" type="radio" value="1" name="isPayed" id="mdp_isPayed">
+					<label class="form-check-label" for="mdp_isPayed">
+						已付
+					</label>
+				</div>
+				<div class="form-check ml-3 pt-2">
+					<input class="form-check-input" type="radio" value="0" name="isPayed" id="mdp_isNotPayed">
+					<label class="form-check-label" for="mdp_isNotPayed">
+						未付
+					</label>
+				</div>
 			</div>
 		</div>
 		</div>
@@ -235,6 +256,7 @@ var purs = [], purCount = 0;
 var $table = $("#table");
 var countTotal = 0, costTotal = 0;
 var sId = "";
+var sPay = -1;
 
 var $modalPur = $("#modalPur");
 var $tablePur = $('#tablePur');
@@ -346,6 +368,12 @@ function loadTable(){
 		costTotal += parseFloat(purs[i]['total_sum']);
 	}
 	$table.bootstrapTable('append', rows);	
+	for(var i=0; i<purCount; i++){
+		if(purs[i]['isPayed'] == 0){
+			//----unpay set color----//
+			$table.find("tr:nth-child("+(i+1)+")").css("background-color","#dee2e6");
+		}
+	}
 	displaySum();
 }
 /*************************************************** 
@@ -367,8 +395,10 @@ function searchPurs(){
 	var timeResult = mdstGetValue();
 	var link = "getAPurs.php?";
 	link += timeResult;
+	link += "&s_pay="+sPay;
 	if (sId != "")
 		link += "&s_id="+sId;
+	console.log(link);
 	getRequest(link, searchPursYes, searchPursNo);
 }
 /*************************************************** 
@@ -400,6 +430,15 @@ function filterSup(e) {
 	searchPurs();
 }
 /*************************************************** 
+	IS Payed Filter
+****************************************************/
+function filterPay(e, typ) {
+	var x = $(e).text();
+	document.getElementById("s_isPayed").innerText = x;
+	sPay = typ;
+	searchPurs();
+}
+/*************************************************** 
 	NEW PURCHASE
 ****************************************************/
 function newPur() {
@@ -426,7 +465,9 @@ function newPur() {
 	mdTax = 0;
 	mdDisplayCal();
 	mdDisplaySum();
-	
+
+	document.getElementById("mdp_isPayed").checked = true;
+
 	$modalPur.modal();
 }
 function setDateMax() {
@@ -656,6 +697,9 @@ function mdpDone() {
 	myPur['tax'] = mdTax.toFixed(2);
 	myPur['payment'] = mdPay.toFixed(2);
 
+	myPur['isPayed'] = 0;
+	if(document.getElementById("mdp_isPayed").checked == true) myPur['isPayed'] = 1;
+
 	if (purType == 1) {
 		var form = new FormData();
 		form.append('f_id', fId);
@@ -748,6 +792,8 @@ function queryPurItemsYes(result) {
 	document.getElementById("mdp_s_name").value = getSupNameById(myPur['s_id']);
 	document.getElementById("mdp_p_id").value = myPur['p_id'];
 	document.getElementById("mdp_date").value = convertDate(myPur['date'], 1);	
+	if(myPur['isPayed'] == 1) document.getElementById("mdp_isPayed").checked = true;
+	else document.getElementById("mdp_isNotPayed").checked = true;
 	setDateMax();
 	resetItemInput();
 	
