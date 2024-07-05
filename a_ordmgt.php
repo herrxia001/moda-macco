@@ -138,7 +138,7 @@ $thisResource = new myResource($_SESSION['uLanguage']);
 <!-- summary -->
 		<div class="row">
 			<div class="p-1 col-12 col-sm-12 col-md-12 col-lg-2" align="left">
-				<div class="dropdown">
+				<div class="dropdown" style="display: inline-block;">
 					<button type="button" id="btnPay" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">付款方式</button>
 					<div class="dropdown-menu">
 						<a class="dropdown-item" href="#" onclick="selPay(this)">全部</a>
@@ -149,6 +149,15 @@ $thisResource = new myResource($_SESSION['uLanguage']);
 						<a class="dropdown-item" href="#" onclick="selPay(this)">Nachnahme</a>
 						<a class="dropdown-item" href="#" onclick="selPay(this)">PayPal</a>
 						<a class="dropdown-item" href="#" onclick="selPay(this)">Vorkasse</a>
+					</div>
+				</div>
+
+				<div class="dropdown" style="display: inline-block;">
+					<button type="button" id="btnisPay" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">全部</button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="#" onclick="selisPay(this, -1)">全部</a>
+						<a class="dropdown-item" href="#" onclick="selisPay(this, 1)">已付</a>
+						<a class="dropdown-item" href="#" onclick="selisPay(this, 0)">未付</a>
 					</div>
 				</div>
 			</div>
@@ -207,6 +216,7 @@ var sortCol = "date", sortOp = 1;
 var countTotal = 0, priceTotal = 0, taxTotal = 0, netTotal = 0, invoiceTotal = 0, fee1Total = 0;
 var customers, myCustomer = null;
 var payType = "pay_all";
+var ispay = -1;
 var pays = ["pay_cash", "pay_card", "pay_bank", "pay_check", "pay_other", "pay_paypal", "pay_vorkasse"];
 // search invoice year
 var searchYear = "2024";
@@ -276,6 +286,11 @@ function loadTable(){
 		payFlag = checkPay(orders[i]);
 		if (!payFlag)
 			continue;
+		if(ispay == 1){
+			if(orders[i]['paid_sum'] < parseFloat(orders[i]['net']) + parseFloat(orders[i]['fee1'])) continue;
+		}else if(ispay == 0){
+			if(orders[i]['paid_sum'] >= parseFloat(orders[i]['net']) + parseFloat(orders[i]['fee1'])) continue;
+		}
 		if (payFlag == 1)
 			inNo = orders[i]['invoice_no'];
 		else
@@ -459,6 +474,12 @@ function selPay(e) {
 		case "Vorkasse": payType = "pay_vorkasse"; break;
 		default: payType = "pay_all";
 	} 
+	loadTable();
+}
+function selisPay(e, typ) {
+	var type_value = $(e).text();
+	document.getElementById("btnisPay").innerText = type_value;
+	ispay = typ;
 	loadTable();
 }
 function checkPay(order) {

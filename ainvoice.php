@@ -1844,7 +1844,7 @@ function printInvoice() {
 	// Company
 	output += '<table width="100%" cellpadding="5" cellspacing="0"><tr>';
 	output += '<td align="center">';
-	output += '<img height="100" style="object-fit: cover; margin-left: 60px; margin-bottom: 10px;" src="'+src+'"></img><br><div style="font-size:24px; font-weight: bold; padding-left: 55px; padding-bottom: 10px;">'+company["c_name"]+'</div>';
+	output += '<img height="100" style="object-fit: cover" src="'+src+'"></img>';
 	output += '</td>';
 	output += '<td align="right">';
 	output += '<b style="font-size:12px">'+company["c_name"]+'</b><br>';
