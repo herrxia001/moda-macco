@@ -21,7 +21,7 @@ $thisResource = new myResource($_SESSION['uLanguage']);
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 
 <head>
     <?php include 'include/header.php' ?>
