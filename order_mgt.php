@@ -21,7 +21,7 @@ $active[3] = "active";
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 <head>
     <?php include 'include/header.php' ?>
 	<title>MODAS - Order Management</title>

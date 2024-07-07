@@ -37,7 +37,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 ?>
 
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 <head>
     <?php include 'include/header.php' ?>
 	<title>MODAS - Order</title>
@@ -1716,7 +1716,7 @@ function printForm() {
 	} else {
 		output = '<html><head><style type="text/css" media="print">@page { size:21.0cm 29.7cm; margin:0.8cm 0.8cm 0.8cm 1.5cm; }\</style></head><body>';
 	}
-	if (myCustomer == null || myCustomer['k_id'] == "" || myCustomer['k_id'] == "0") {
+	if (myCustomer == null || myCustomer['k_id'] == "" || myCustomer['k_id'] == "0" || printType == 0) {
 		withHeader = false;
 	} else {
 		withHeader = true;
