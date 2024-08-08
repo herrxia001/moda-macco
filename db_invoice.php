@@ -259,6 +259,11 @@ function dbUpdateInvoice($order)
 	
 	$result = $thisDb->dbUpdate($sqlUpdate);
 
+	if($order['isPayed'] == "") $order['isPayed'] = 0;
+	$sqlUpdate = "UPDATE a_invoice SET isPayed = '".$order['isPayed']."' WHERE r_id ='".$rId."'"; 
+	$result = $thisDb->dbUpdate($sqlUpdate);
+	
+
 	// update customer in orders //
 	$sqlUpdate = "UPDATE orders SET k_id = '".$order['k_id']."' WHERE o_id IN (SELECT o_id FROM a_invoice WHERE r_id = '".$rId."' )";
 	$thisDb->dbUpdate($sqlUpdate);

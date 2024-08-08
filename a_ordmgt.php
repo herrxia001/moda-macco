@@ -287,9 +287,9 @@ function loadTable(){
 		if (!payFlag)
 			continue;
 		if(ispay == 1){
-			if(orders[i]['paid_sum'] < parseFloat(orders[i]['net']) + parseFloat(orders[i]['fee1'])) continue;
+			if(orders[i]['isPayed'] == 0) continue;
 		}else if(ispay == 0){
-			if(orders[i]['paid_sum'] >= parseFloat(orders[i]['net']) + parseFloat(orders[i]['fee1'])) continue;
+			if(orders[i]['isPayed'] == 1) continue;
 		}
 		if (payFlag == 1)
 			inNo = orders[i]['invoice_no'];
@@ -316,6 +316,23 @@ function loadTable(){
 		fee1Total += parseFloat(orders[i]['fee1']);
 	}
 	$table.bootstrapTable('append', rows);	
+	var index = 0;
+	for(var i=0; i<orderCount; i++){
+		payFlag = checkPay(orders[i]);
+		if (!payFlag)
+			continue;
+		if(ispay == 1){
+			if(orders[i]['isPayed'] == 0) continue;
+		}else if(ispay == 0){
+			if(orders[i]['isPayed'] == 1) continue;
+		}
+		if(orders[i]['isPayed'] == 0){
+			//----unpay set color----//
+			$table.find("tr:nth-child("+(index+1)+")").css("color","red");
+		}
+		index++;
+	}
+
 	displaySum();
 }
 
@@ -361,7 +378,13 @@ function displayNo(result) {
 }
 
 function searchOrders(){
-	var timeResult = mdstGetValue();
+	var timeResult;
+	if(localStorage.getItem("timeStr") != "" && typeof localStorage.getItem("timeStr") !== 'undefined' && localStorage.getItem("timeStr") !== null){
+		document.getElementById("selTime").innerText = localStorage.getItem("timeStr");
+		timeResult = localStorage.getItem("timeResult");
+	}else{
+		timeResult = mdstGetValue();
+	}
 	var link = "getInvoices.php?";
 	link += timeResult;
 	if (myCustomer != null)
@@ -370,6 +393,14 @@ function searchOrders(){
 }
 
 $(document).ready(function(){
+	if(localStorage.getItem("billingPaySearch") == "0"){ // not pay
+		document.getElementById("btnisPay").innerText = "未付";
+		ispay = 0;
+	}else if(localStorage.getItem("billingPaySearch") == "1"){ // payed
+		document.getElementById("btnisPay").innerText = "已付";
+		ispay = 1;
+	}
+
 	document.getElementById("myTitle").innerText = "销售发票列表";
 	// Search by default
 	document.getElementById("btnSelCust").innerText = "全部客户";
@@ -417,7 +448,9 @@ function mdstDoneTime(){
 	 
 	var timeStr = mdstGetStr();	
 	document.getElementById("selTime").innerText = timeStr;
-	
+	localStorage.setItem("timeResult", mdstGetValue());
+	localStorage.setItem("timeRange", mdstGetValue(1));
+	localStorage.setItem("timeStr", timeStr);
 	searchOrders();
 }
 
@@ -481,6 +514,7 @@ function selisPay(e, typ) {
 	document.getElementById("btnisPay").innerText = type_value;
 	ispay = typ;
 	loadTable();
+	localStorage.setItem("billingPaySearch", typ);
 }
 function checkPay(order) {
 	if (payType == "pay_all")
@@ -583,7 +617,12 @@ function exportFile() {
 /* PRINT */
 function printFile() { 	
 	var dt = currentDate();	
-	var timeRange = mdstGetValue(1);
+	var timeRange;
+	if(localStorage.getItem("timeStr") != ""){
+		timeRange = localStorage.getItem("timeRange");
+	}else{
+		timeRange = mdstGetValue(1);
+	}
 	
 	var src = "files/"+"<?php echo $_SESSION['uDb']; ?>"+"/logo.png";
 	var output = '<html><head><style type="text/css" media="print">@page { size:auto; margin:0.8cm 0.8cm 0.8cm 1.5cm; }\</style></head><body>';	
