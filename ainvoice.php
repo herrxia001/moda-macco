@@ -416,6 +416,20 @@ body {
 				<div class="input-group-prepend"><span class="input-group-text" style="width:120px;">未付</span></div>
 				<input type="text" class="form-control" name="mp_pays_due" id="mp_pays_due" readonly>
 			</div>	
+			<div class="row">
+				<div class="form-check ml-4 pt-2">
+					<input class="form-check-input" type="radio" value="1" name="isPayed" id="mdp_isPayed">
+					<label class="form-check-label" for="mdp_isPayed">
+						已付
+					</label>
+				</div>
+				<div class="form-check ml-4 pt-2">
+						<input class="form-check-input" type="radio" value="0" name="isPayed" id="mdp_isNotPayed">
+						<label class="form-check-label" for="mdp_isNotPayed">
+							未付
+						</label>
+					</div>
+			</div>
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal"><span class='fa fa-times'></button>
@@ -1323,6 +1337,8 @@ function displayPay() {
 	document.getElementById("mp_total").value = order['net'];
 	document.getElementById("mp_pays_total").value = pays_total.toFixed(2);
 	document.getElementById("mp_pays_due").value = pays_due.toFixed(2);
+	if(order['isPayed'] == 1) document.getElementById("mdp_isPayed").checked = true;
+	else document.getElementById("mdp_isNotPayed").checked = true;
 }
 // Show modalOrderPay
 function showPay() {
@@ -1415,6 +1431,10 @@ function donePay() {
 	}
 	order['due'] = pays_due.toFixed(2);
 	$modalOrderPay.modal("toggle");
+
+	order['isPayed'] = 0;
+	if(document.getElementById("mdp_isPayed").checked == true) order['isPayed'] = 1;
+
 	displaySum();
 }
 /************************************************************************
