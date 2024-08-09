@@ -449,7 +449,7 @@ function mdstDoneTime(){
 	var timeStr = mdstGetStr();	
 	document.getElementById("selTime").innerText = timeStr;
 	localStorage.setItem("timeResult", mdstGetValue());
-	localStorage.setItem("timeRange", mdstGetValue(1));
+	//localStorage.setItem("timeRange", mdstGetValue(1));
 	localStorage.setItem("timeStr", timeStr);
 	searchOrders();
 }
@@ -586,6 +586,11 @@ function exportFile() {
 		payFlag = checkPay(orders[i]);
 		if (!payFlag)
 			continue;
+		if(ispay == 1){
+			if(orders[i]['isPayed'] == 0) continue;
+		}else if(ispay == 0){
+			if(orders[i]['isPayed'] == 1) continue;
+		}
 		if (payFlag == 1)
 			inNo = orders[i]['invoice_no'];
 		else
@@ -618,8 +623,9 @@ function exportFile() {
 function printFile() { 	
 	var dt = currentDate();	
 	var timeRange;
-	if(localStorage.getItem("timeStr") != ""){
-		timeRange = localStorage.getItem("timeRange");
+	if(localStorage.getItem("timeStr") != "" && typeof localStorage.getItem("timeStr") !== 'undefined' && localStorage.getItem("timeStr") !== null){
+		var urlParam = new URLSearchParams(localStorage.getItem("timeResult"));
+		timeRange = { timefrom: urlParam.get('timefrom'), timeto: urlParam.get('timeto') };
 	}else{
 		timeRange = mdstGetValue(1);
 	}
@@ -650,6 +656,11 @@ function printFile() {
 		payFlag = checkPay(orders[i]);
 		if (!payFlag)
 			continue;
+		if(ispay == 1){
+			if(orders[i]['isPayed'] == 0) continue;
+		}else if(ispay == 0){
+			if(orders[i]['isPayed'] == 1) continue;
+		}
 		if (payFlag == 1)
 			inNo = orders[i]['invoice_no'];
 		else
