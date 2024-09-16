@@ -46,7 +46,7 @@ if($year >= 2023){
 $last = dbQueryArtHistLast($year-1, "0");
 
 if(is_array($invs))for ($i=0; $i<count($invs); $i++) {
-	$invs[$i]['count'] = intval($invs[$i]['count']) - intval($invs[$i]['dep_count']);
+	$invs[$i]['count'] = intval($invs[$i]['count']) + intval($invs[$i]['dep_count']);
 	$sum['count'] += intval($invs[$i]['count']);
 	
 	$invs[$i]['subtotal'] = strval(intval($invs[$i]['count'])*floatval($invs[$i]['cost']));
@@ -89,7 +89,7 @@ if(is_array($invs))for ($i=0; $i<count($invs); $i++) {
 		}
 		if (!$ok) {
 			$invs[$i]['last'] = "0";
-		}
+		} else $sum['last'] += intval($invs[$i]['last']);
 	}
 }
 
