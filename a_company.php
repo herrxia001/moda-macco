@@ -109,6 +109,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST')
 		</div>
 		<div class="row">
 			<div class="input-group p-1 col-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="input-group-prepend"><span class="input-group-text" style="width:120px;">HRB</span></div>
+				<input type="text" class="form-control" id="hrb" name="hrb" value="<?php echo $myCompany['hrb'] ?>">					
+				<div class="ml-2 input-group-prepend"><span class="input-group-text" style="width:120px;">法人代表</span></div>
+				<input type="text" class="form-control" id="geschaeftsfuehrer" name="geschaeftsfuehrer" value="<?php echo $myCompany['geschaeftsfuehrer'] ?>">
+			</div>
+		</div>
+		<div class="row">
+			<div class="input-group p-1 col-12 col-sm-12 col-md-12 col-lg-12">
 				<div class="input-group-prepend"><span class="input-group-text" style="width:120px;">网址</span></div>
 				<input type="text" class="form-control" id="website" name="website" value="<?php echo $myCompany['website'] ?>">
 			</div>
