@@ -90,14 +90,14 @@ function dbQueryAllUsers()
 
 function dbGetCompanyColumns()
 {
-	$thisColumns = array('c_name','address','post','city','country','tel','fax','mobile','email','whatsapp','tax_no','uid_no','iban','bic','tax','website');
+	$thisColumns = array('c_name','address','post','city','country','tel','fax','mobile','email','whatsapp','tax_no','uid_no','iban','bic','tax','website','hrb','geschaeftsfuehrer');
 	
 	return $thisColumns;
 }
 
 function dbGetCompanyColumnNo()
 {
-	return 16;
+	return 18;
 }
 
 function dbQueryCompany()

@@ -1910,6 +1910,8 @@ function printInvoiceErechnung(){
     output += company["address"]+', ';
 	output += company["post"] + ' ' + company["city"] +' ';
 	output += company["country"]+' ';
+	output += 'Geschäftsführer: ' + company["geschaeftsfuehrer"]+' ';
+	output += 'Handelsregisternummer: ' + company["hrb"];
 	//Geschäftsführer: Hans Muster
     //Handelsregisternummer: H A 123
     output += '</ram:Content>';
@@ -2145,6 +2147,10 @@ function printInvoice() {
 	output += '<a style="font-size:12px">WhatsApp:'+company["whatsapp"]+'&nbsp;E-Mail:'+company["email"]+'</a><br>';
 	if (company['website'] != null && company['website'] != "")
 		output += '<a style="font-size:12px">Website:'+company["website"]+'</a><br>';
+	if (company['geschaeftsfuehrer'] != null && company['geschaeftsfuehrer'] != "")
+		output += '<a style="font-size:12px">Geschäftsführer:'+company["geschaeftsfuehrer"]+'</a><br>';
+	if (company['hrb'] != null && company['hrb'] != "")
+		output += '<a style="font-size:12px">Handelsregisternummer:'+company["hrb"]+'</a><br>';
 	output += '</td>';
 	output += '</tr></table>';
 // second row
