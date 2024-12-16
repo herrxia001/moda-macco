@@ -2028,7 +2028,7 @@ if (notZero(order['fee1'])) {
     output += '<ram:GlobalID schemeID="0088">'+company['c_id']+'</ram:GlobalID>';
     output += '<ram:Name>'+company['c_name']+'</ram:Name>';
     output += '<ram:DefinedTradeContact>';
-    //output += '<ram:PersonName>'+company['name1']+'</ram:PersonName>
+    output += '<ram:PersonName>'+company['geschaeftsfuehrer']+'</ram:PersonName>';
     output += '<ram:DepartmentName>Buchhaltung</ram:DepartmentName>';
     output += '<ram:TelephoneUniversalCommunication>';
     output += '<ram:CompleteNumber>'+seller_tel+'</ram:CompleteNumber>';
