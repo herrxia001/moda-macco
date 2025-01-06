@@ -1888,6 +1888,7 @@ function printOrder() {
 }
 function printInvoiceErechnung(){
 	var date_tmp = order['date'].substring(0,4)+order['date'].substring(5,7)+order['date'].substring(8,10);
+	var date_tmp_2 = order['date'].substring(8,10)+"."+order['date'].substring(5,7)+"."+order['date'].substring(0,4);
 	var liefer_date_tmp = order['lieferdatum'].substring(0,4)+order['lieferdatum'].substring(5,7)+order['lieferdatum'].substring(8,10);
 	var output = '\<\?xml version="1.0" encoding="UTF-8" \?\><rsm:CrossIndustryInvoice xmlns:rsm="urn:un:unece:uncefact:data:standard:CrossIndustryInvoice:100" xmlns:a="urn:un:unece:uncefact:data:standard:QualifiedDataType:100" xmlns:qdt="urn:un:unece:uncefact:data:standard:QualifiedDataType:10" xmlns:ram="urn:un:unece:uncefact:data:standard:ReusableAggregateBusinessInformationEntity:100" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:udt="urn:un:unece:uncefact:data:standard:UnqualifiedDataType:100" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">';
     output += '<rsm:ExchangedDocumentContext>';
@@ -1903,7 +1904,7 @@ function printInvoiceErechnung(){
     output += '<udt:DateTimeString format="102">'+date_tmp+'</udt:DateTimeString>';
     output += '</ram:IssueDateTime>';
     output += '<ram:IncludedNote>';
-    output += '<ram:Content>Rechnung gemäß Bestellung vom 01.03.2018.</ram:Content>';
+    output += '<ram:Content>Rechnung gemäß Bestellung vom '+date_tmp_2+'.</ram:Content>';
     output += '</ram:IncludedNote>';
     output += '<ram:IncludedNote>';
     output += '<ram:Content>'+company["c_name"]+' ';
