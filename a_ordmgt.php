@@ -550,6 +550,7 @@ function searchInvoice() {
 	var invoiceNo = document.getElementById("invoice_no").value;
 	if (invoiceNo == "")
 		return;
+	searchYear = document.getElementById("btnInYear").innerText;
 	getRequest("getInvoiceByNo.php?invoice_no="+invoiceNo+"&year="+searchYear, searchInvoiceYes, searchInvoiceNo);
 }
 function searchInvoiceYes(result) {
