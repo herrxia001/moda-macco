@@ -715,8 +715,16 @@ var pdfRechNr = "";
 function pdfFile() {
 	if(!confirm("确定要导出 "+orderCount+" 个PDF文件?"))
 		return;
-	modalPdf.modal();
-	getOrderItem();		
+	var i=0;
+	var id_str = "";
+	for(i = 0; i<orders.length; i++){
+		if(id_str == "") id_str = orders[i].r_id;
+		else id_str += "," + orders[i].r_id;
+	}
+	console.log(id_str);
+	window.open("api/xrechnungZip.php?id_str="+id_str);
+	//modalPdf.modal();
+	//getOrderItem();	
 }
 
 function savePdf(invoiceHTML) {

@@ -85,7 +85,7 @@ body {
 			<button type="button" class="btn btn-danger" id="btnDestroy" onclick="destroyOrder()">删除</button>
 			<button type="button" class="btn btn-secondary" id="btnOptions" onclick="showOptions()">选项</button>		
 			<button type="button" class="btn btn-success" id="btnPrint" onclick="printOrder()">打印</button>
-			<button type="button" class="btn btn-success" id="btnERechnung" onclick="eRechnungOrder()">XML</button>
+			<button type="button" class="btn btn-success" id="btnERechnung" onclick="eRechnungOrder()">下载</button>
 			<button type="button" class="btn btn-primary" id="btnSave" onclick="submitOrder()">保存</button>		
 		</div>
 		<div class="p-1 col-12 col-sm-12 col-md-12 col-lg-2" align="right">
@@ -1887,6 +1887,8 @@ function printOrder() {
 		printInvoice();
 }
 function printInvoiceErechnung(){
+	window.open("api/xrechnung.php?id="+order['r_id']);
+	return;
 	var date_tmp = order['date'].substring(0,4)+order['date'].substring(5,7)+order['date'].substring(8,10);
 	var date_tmp_2 = order['date'].substring(8,10)+"."+order['date'].substring(5,7)+"."+order['date'].substring(0,4);
 	var liefer_date_tmp = order['lieferdatum'].substring(0,4)+order['lieferdatum'].substring(5,7)+order['lieferdatum'].substring(8,10);
