@@ -51,7 +51,7 @@ foreach($result AS $element){
 
 $thisDb = new myDatabase($db);
 
-$archive_file_name = 'Rechnung Reprot '.date("YmdHis").'.zip';
+$archive_file_name = 'data/Rechnung Reprot '.date("YmdHis").'.zip';
 $zip = new ZipArchive;
 $res = $zip->open($archive_file_name, ZipArchive::CREATE);
 
