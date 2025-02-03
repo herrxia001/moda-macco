@@ -43,7 +43,7 @@ foreach($files as $file){ // iterate files
 
 $company = array();
 $thisDb = new myDatabase($db_root);
-$sql = "SELECT * FROM company WHERE c_id = 1";
+$sql = "SELECT * FROM company WHERE c_id = ".$_SESSION['cId'];
 $result = $thisDb->dbQuery($sql);
 foreach($result AS $element){
     $company = $element;
